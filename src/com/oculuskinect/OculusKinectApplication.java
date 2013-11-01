@@ -1,5 +1,7 @@
 package com.oculuskinect;
 
+import java.awt.image.BufferedImage;
+
 import kinect.Kinect;
 
 import com.jme3.app.SimpleApplication;
@@ -8,6 +10,7 @@ import com.jme3.input.KeyInput;
 import com.jme3.input.controls.ActionListener;
 import com.jme3.input.controls.KeyTrigger;
 import com.jme3.material.Material;
+import com.jme3.material.RenderState.FaceCullMode;
 import com.jme3.math.Vector3f;
 import com.jme3.renderer.ViewPort;
 import com.jme3.renderer.queue.RenderQueue;
@@ -51,7 +54,7 @@ public class OculusKinectApplication extends SimpleApplication implements Action
         initOculus();
 		initKinect();
         initWorld();
-        initTerrain();
+        //initTerrain();
         initInputs();
     }
 	
@@ -60,15 +63,17 @@ public class OculusKinectApplication extends SimpleApplication implements Action
        super.update();
        Vector3f t = worldLeft.getLocalTranslation();
        cam.setLocation(new Vector3f(t.x, t.y, t.z + 10));
-       leftEye.setImage(imageLoader.load(leftKinect.getColorImage(true), true));
-       rightEye.setImage(imageLoader.load(rightKinect.getColorImage(true), true));
+       //BufferedImage image = leftKinect.getColorImage(false);
+       leftEye.setImage(imageLoader.load(leftKinect.getColorImage(false), true));
+       rightEye.setImage(imageLoader.load(rightKinect.getColorImage(false), true));
     }
     
     private void initWorld(){
-        Quad worldLeftQuad = new Quad(7, 7);
+        Quad worldLeftQuad = new Quad(6f, 6f);
         Geometry worldLeftGeom = new Geometry("World", worldLeftQuad);
-        worldLeftGeom.setLocalTranslation(-3.5f, -3.5f, 0);
+        worldLeftGeom.setLocalTranslation(-3f, -3f, 0);
         Material leftMat = new Material(assetManager, "Common/MatDefs/Misc/Unshaded.j3md");
+        leftMat.getAdditionalRenderState().setFaceCullMode(FaceCullMode.Off);
         leftMat.setTexture("ColorMap", leftEye);
         worldLeftGeom.setMaterial(leftMat);
         worldLeftGeom.setQueueBucket(RenderQueue.Bucket.Sky);
@@ -80,10 +85,11 @@ public class OculusKinectApplication extends SimpleApplication implements Action
         worldLeft.addControl(controlLeft);
         worldLeft.attachChild(worldLeftGeom);
         
-        Quad worldRightQuad = new Quad(7, 7);
+        Quad worldRightQuad = new Quad(6f, 6f);
         Geometry worldRightGeom = new Geometry("World", worldRightQuad);
-        worldRightGeom.setLocalTranslation(-3.5f, -3.5f, 0);
+        worldRightGeom.setLocalTranslation(-3f, -3f, 0);
         Material rightMat = new Material(assetManager, "Common/MatDefs/Misc/Unshaded.j3md");
+        rightMat.getAdditionalRenderState().setFaceCullMode(FaceCullMode.Off);
         rightMat.setTexture("ColorMap", rightEye);
         worldRightGeom.setMaterial(rightMat);
         worldRightGeom.setQueueBucket(RenderQueue.Bucket.Sky);
@@ -103,13 +109,15 @@ public class OculusKinectApplication extends SimpleApplication implements Action
 	
 	private void initKinect(){
 		leftKinect = new Kinect(0);
+		leftKinect.initialize(Kinect.INITIALIZE_FLAGS.USES_COLOR);
 		rightKinect = new Kinect(1);
+		rightKinect.initialize(Kinect.INITIALIZE_FLAGS.USES_COLOR);
 		imageLoader = new AWTLoader();
         
         leftEye = new Texture2D();
         rightEye = new Texture2D();
-        leftEye.setImage(imageLoader.load(leftKinect.getColorImage(true), true));
-        rightEye.setImage(imageLoader.load(rightKinect.getColorImage(true), true));
+        leftEye.setImage(imageLoader.load(leftKinect.getColorImage(false), true));
+        rightEye.setImage(imageLoader.load(leftKinect.getColorImage(false), false));
 	}
 	
 	private void initTerrain(){

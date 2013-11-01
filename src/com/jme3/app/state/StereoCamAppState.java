@@ -36,7 +36,7 @@ public class StereoCamAppState extends AbstractAppState{
     private SimpleApplication app;
     private FilterPostProcessor ppLeft, ppRight;
     private BarrelDistortionFilter filterLeft, filterRight;
-    Camera camLeft,camRight;
+    protected Camera camLeft,camRight;
     protected ViewPort viewPortLeft, viewPortRight, guiViewPortRight;
     private static OculusRiftReader oculus;
     private StereoCameraControl camControl = new StereoCameraControl();
@@ -129,10 +129,10 @@ public class StereoCamAppState extends AbstractAppState{
     
     @Override
     public void update(float tpf) {
-        //super.update(tpf);
+        super.update(tpf);
         
         if(oculus != null){
-            //oculus.update();
+            oculus.update();
         }
     }
     
