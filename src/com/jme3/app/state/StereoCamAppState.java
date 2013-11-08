@@ -129,10 +129,10 @@ public class StereoCamAppState extends AbstractAppState{
     
     @Override
     public void update(float tpf) {
-        //super.update(tpf);
+        super.update(tpf);
         
         if(oculus != null){
-            //oculus.update();
+            oculus.update();
         }
     }
     
