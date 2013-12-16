@@ -89,9 +89,13 @@ public class StereoCameraControl extends CameraControl {
                     }
 //                    lookDirection.multLocal(spatial.getWorldRotation());
                     camera.setRotation(lookDirection);
-                    camera.setLocation(spatial.getWorldTranslation().add(camera.getRotation().mult(cameraOffset)));
-                    camera2.setLocation(spatial.getWorldTranslation().add(camera.getRotation().mult(cameraOffset.negate())));
+                    //camera.setLocation(spatial.getWorldTranslation().add(camera.getRotation().mult(cameraOffset)));
+                    //camera2.setLocation(spatial.getWorldTranslation().add(camera.getRotation().mult(cameraOffset.negate())));
                     camera2.setRotation(lookDirection);
+                    
+                    spatial.setLocalTranslation(camera.getLocation().add(camera.getDirection().mult(12)));
+
+                    
                     break;
                 case CameraToSpatial:
                     // set the localtransform, so that the worldtransform would be equal to the camera's transform.
