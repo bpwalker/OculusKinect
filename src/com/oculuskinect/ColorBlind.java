@@ -1,7 +1,11 @@
 package com.oculuskinect;
 
 import java.awt.Color;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
 
+import javax.imageio.ImageIO;
 import javax.swing.plaf.ColorUIResource;
 
 public class ColorBlind
@@ -123,7 +127,10 @@ public class ColorBlind
         if (type == 0 || color == null)
             return color;
         type--;
-
+        
+        if (color.equals(Color.black) || color.equals(Color.white))
+			return color;
+        
         double red = color.getRed();
         double green = color.getGreen();
         double blue = color.getBlue();
